@@ -1,6 +1,6 @@
 language: java
 script:
-- "./gradlew clean build bundleMod createTemplate"
+- "./gradlew clean build bundleMod"
 deploy:
   provider: releases
   api_key:
