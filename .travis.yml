@@ -1,8 +1,6 @@
 language: java
 script:
-- "git tag SS[8.1a]--build:${TRAVIS_BUILD_NUMBER}"
 - "./gradlew clean build bundleMod"
-- "git push --tags"
 deploy:
   provider: releases
   api_key:
