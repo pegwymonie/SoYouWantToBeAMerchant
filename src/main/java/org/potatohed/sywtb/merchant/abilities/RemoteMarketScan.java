@@ -34,12 +34,10 @@ import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;
 public class RemoteMarketScan extends BaseDurationAbility {
 
     private CampaignEventPlugin event;
-    private CampaignEventManagerAPI eventManagerAPI;
 
     @Override
     protected void activateImpl() {
-        eventManagerAPI = Global.getSector().getEventManager();
-        event = eventManagerAPI.startEvent(new CampaignEventTarget(getPlayer()), "merchant_market_scan", null);
+        event = getEventManager().startEvent(new CampaignEventTarget(getPlayer()), "merchant_market_scan", null);
     }
 
     @Override
@@ -52,10 +50,14 @@ public class RemoteMarketScan extends BaseDurationAbility {
 
     @Override
     protected void cleanupImpl() {
-        eventManagerAPI.endEvent(event);
+        getEventManager().endEvent(event);
     }
 
     private PersonAPI getPlayer() {
         return Global.getSector().getPlayerPerson();
+    }
+
+    private CampaignEventManagerAPI getEventManager(){
+        return Global.getSector().getEventManager();
     }
 }

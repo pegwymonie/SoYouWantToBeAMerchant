@@ -133,6 +133,12 @@ dependencies {
 
   testCompile fileTree(dir: 'libs/test', include: ['*.jar'])
   testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.9.0'
+  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
 }
 
 static Spec<FileTreeElement> getEmptyCsvFiles() {
@@ -172,7 +178,7 @@ task reInit() {
       ant.move(file: existingMain, tofile: newMain)
       ant.move(file: existingTest, tofile: newTest)
     } catch (Exception e) {
-      print("unable to move java files");
+      print("unable to move java files")
     }
 
     File buildFile = new File('build.gradle')
