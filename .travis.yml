@@ -1,0 +1,12 @@
+language: java
+script:
+- "./gradlew clean build bundleMod createTemplate"
+deploy:
+  provider: releases
+  api_key:
+    secure: BtlS2Md6aW8GiM5++Jlhkq5vvgcJWd5KwAUHUr3RxkHmVdtePLNRaYP53j+hbS7g4nrzLUiL1NAAurA1ZLcl+UwEmUgOm5/AFzfjfPhxxEtyA3PmlIZ69s1y/e/loxdVdlvlnZdjCjRwU9oH6Rz9oSOkFotvRfCm1l8UTmcYVBlCLK7GLtd4qpFwVGTr6s0Z89W6K3WU+nbjs1EyPi98wVOkgNblvxks5RRtL4foGdEm73bKuJfKTuE3bY/v00zMXhqgkTMCCi8KM3rkyRo98ZCD5ySFAW3jI8F7MTmdE0yUVy8NxX74f8wYFhrMBwiJgUAnRfk+RIMDg4L64NByGzJtd4BA42xb2Fkdp7LsEbeldC4XrWRl0fD+QRp1eCs85POMS6Ok1cQzVGSIZIuw2M7IwdoWAU1zkkQ/VK2PA8wf2M+Csmsb92frDz+bvlF6XpFOxfttstzQpt9mGrXwq95Qrm3gj+yRu80hm6lWYz+WTB73+pBnGsNcHC1N2X7ho6xNclelL5bcbTrneEP153GRhBn1l156PL3JTX693okCTNRYE3JmZe/RKwoUwpOqMtfe1QCcSass8UuMczjvocb3oYVvoR6tsIyCxOPkP7fbmFzbaFj/T6/S83IZaqnBJgvLaPB4L/+yA3nI03VpTDGytfrLhN+hkN26gXkXXBs=
+  file_glob: true
+  file: build/distributions/*
+  skip_cleanup: true
+  on:
+    repo: pegwymonie/SoYouWantToBeAMerchant
