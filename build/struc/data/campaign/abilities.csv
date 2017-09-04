@@ -1,0 +1,2 @@
+name,id,type,tags,activationDays,activationCooldown,durationDays,deactivationDays,deactivationCooldown,unlockedAtStart,defaultForAIFleet,musicSuppression,uiOn,uiOff,uiLoop,worldOn,worldOff,worldLoop,icon,plugin,ai,desc,sortOrder
+Remote Market Scan,remote_market_scan,DURATION,,0.5,5,2,0,0,FALSE,,,ui_sensor_burst_on,,,,,,graphics/icons/price_update.png,org.potatohed.sywtb.merchant.abilities.RemoteMarketScan,,Scan Markets for the Best Prices,950

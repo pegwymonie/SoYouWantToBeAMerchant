@@ -1,0 +1,10 @@
+{
+  "id": "sywtbMerchant",
+  "name": "So you want to be a Merchant",
+  "author": "pegwymonie",
+  "version": "0.2A",
+  "description": "Adds one skill, with the hopes of increasing the ease of being a merchant",
+  "gameVersion": "0.82a",
+  "jars": ["jars/SywtbMerchant.jar"],
+  "modPlugin":"org.potatohed.sywtb.merchant.SYWTBMerchant"
+}

@@ -1,0 +1,14 @@
+{
+  "merchant_market_scan": {
+    "script": "org.potatohed.sywtb.merchant.events.RemoteMarketScanEvent",
+    "image": "graphics/icons/price_update.png"
+  },
+  "merchant_kickback": {
+    "script": "org.potatohed.sywtb.merchant.events.KickBackEvent",
+    "image": "graphics/icons/price_update.png"
+  },
+  "merchant_reputation": {
+    "script": "org.potatohed.sywtb.merchant.events.ReputationEvent",
+    "image": "graphics/icons/price_update.png"
+  }
+}

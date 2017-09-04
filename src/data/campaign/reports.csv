@@ -1,0 +1,4 @@
+event_type,event_stage,p,target_rel,channels,subject,summary,assessment,image,icon,tags,sound_id,implementation notes
+merchant_market_scan,merchant_prices_remote,,,player_intel_always,Price Scan update,Utilizing your market scanning software has yielded price data for some commodities in the $fromSystem star system.,$priceList,,,prices,,
+merchant_kickback,merchant_tariff_refund,,,player_intel_always,Tariff Refund : $credits,"Tapping into your good relations with $faction, you have received a refund for your recent transaction at $market",Tax Credit: $credits,,,nomap,,
+merchant_reputation,merchant_rep_gain_demand,,,player_intel_always,Standing with $faction improved (+$change) due to helping with local demands,Your recent trading activity at $market have been publicly noted by $faction.,,,,nomap,,

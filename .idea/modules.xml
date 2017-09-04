@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SYWTBMerchant.iml" filepath="$PROJECT_DIR$/.idea/modules/SYWTBMerchant.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SYWTBMerchant_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SYWTBMerchant_main.iml" group="SYWTBMerchant" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SYWTBMerchant_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SYWTBMerchant_test.iml" group="SYWTBMerchant" />
+    </modules>
+  </component>
+</project>
