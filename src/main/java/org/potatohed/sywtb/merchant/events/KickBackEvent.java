@@ -25,99 +25,97 @@
 package org.potatohed.sywtb.merchant.events;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.*;
-import com.fs.starfarer.api.campaign.comm.CommMessageAPI;
+import com.fs.starfarer.api.campaign.CampaignUIAPI;
+import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.PlayerMarketTransaction;
+import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.comm.MessagePriority;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.RelationshipAPI;
 import com.fs.starfarer.api.impl.campaign.events.BaseEventPlugin;
-import org.potatohed.sywtb.merchant.util.TariffDetails;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.potatohed.sywtb.merchant.util.AddCreditsOnReceiveCallBack;
+import org.potatohed.sywtb.merchant.util.TariffDetails;
 
 public class KickBackEvent extends BaseEventPlugin {
 
-    private Long lastRefundAmount;
-    private FactionAPI lastFaction;
-    private MarketAPI lastMarket;
+  private Long lastRefundAmount;
+  private FactionAPI lastFaction;
+  private MarketAPI lastMarket;
 
-    @Override
-    public void reportPlayerMarketTransaction(PlayerMarketTransaction transaction) {
-        MarketAPI market = transaction.getMarket();
-        RelationshipAPI factionStanding = market.getFaction().getRelToPlayer();
+  @Override
+  public void reportPlayerMarketTransaction(PlayerMarketTransaction transaction) {
+    MarketAPI market = transaction.getMarket();
+    RelationshipAPI factionStanding = market.getFaction().getRelToPlayer();
 
-        if (isFavorable(factionStanding) && notSneaking(transaction)) {
-            final Long refund = refundFrom(tariffDetailsOf(transaction), factionStanding);
-            if (refund > 400) {
-                issueRefund(market, refund);
-            }
-        }
+    if (isFavorable(factionStanding) && notSneaking(transaction)) {
+      final Long refund = refundFrom(tariffDetailsOf(transaction), factionStanding);
+      if (refund > 400) {
+        issueRefund(market, refund);
+      }
     }
+  }
 
-    private TariffDetails tariffDetailsOf(PlayerMarketTransaction transaction) {
-        long tariffPaid = 0L;
-        long demandTariff = 0L;
-        for (PlayerMarketTransaction.TransactionLineItem transactionLineItem : transaction.getLineItems()) {
-            tariffPaid += transactionLineItem.getTariff();
-            demandTariff += transactionLineItem.getDemandTariff();
-        }
-        return new TariffDetails(tariffPaid, demandTariff);
+  private TariffDetails tariffDetailsOf(PlayerMarketTransaction transaction) {
+    long tariffPaid = 0L;
+    long demandTariff = 0L;
+    for (PlayerMarketTransaction.TransactionLineItem transactionLineItem : transaction
+        .getLineItems()) {
+      tariffPaid += transactionLineItem.getTariff();
+      demandTariff += transactionLineItem.getDemandTariff();
     }
+    return new TariffDetails(tariffPaid, demandTariff);
+  }
 
-    private Long refundFrom(TariffDetails details, RelationshipAPI factionStanding) {
-        Long regularTariff = details.getRegularTariff();
-        Long demandTariff = details.getDemandTariff();
-        Double refundAmount = 0D;
-        switch (factionStanding.getLevel()) {
-            // 75% of demand tariff + 75% of demand tariff
-            case COOPERATIVE:
-                refundAmount += (regularTariff * .25) + (demandTariff * .25);
-                // 50% of demand tariff + 50% of normal tariff
-            case FRIENDLY:
-                refundAmount += (regularTariff * .25) + (demandTariff * .25);
-                // 25% of demand tariff + 25% of normal tariff
-            case WELCOMING:
-                refundAmount += (regularTariff * .25) + (demandTariff * .15);
-                // 10 % of demand tariff
-            case FAVORABLE:
-                refundAmount += (demandTariff * .10);
-        }
-        return refundAmount.longValue();
+  private Long refundFrom(TariffDetails details, RelationshipAPI factionStanding) {
+    Long regularTariff = details.getRegularTariff();
+    Long demandTariff = details.getDemandTariff();
+    Double refundAmount = 0D;
+    switch (factionStanding.getLevel()) {
+    // 75% of demand tariff + 75% of demand tariff
+    case COOPERATIVE:
+      refundAmount += (regularTariff * .25) + (demandTariff * .25);
+      // 50% of demand tariff + 50% of normal tariff
+    case FRIENDLY:
+      refundAmount += (regularTariff * .25) + (demandTariff * .25);
+      // 25% of demand tariff + 25% of normal tariff
+    case WELCOMING:
+      refundAmount += (regularTariff * .15) + (demandTariff * .15);
+      // 15% of demand tariff + 15% of normal tariff
+    case FAVORABLE:
+      refundAmount += (regularTariff * .10) + (demandTariff * .10);
     }
+    return refundAmount.longValue();
+  }
 
-    private void issueRefund(MarketAPI marketAPI, final Long refund) {
-        lastRefundAmount = refund;
-        lastFaction = marketAPI.getFaction();
-        lastMarket = marketAPI;
-        Global.getSector()
-                .reportEventStage(
-                        this,
-                        "merchant_tariff_refund",
-                        marketAPI.getPrimaryEntity(),
-                        MessagePriority.DELIVER_IMMEDIATELY,
-                        new BaseOnMessageDeliveryScript() {
-                            @Override
-                            public void beforeDelivery(CommMessageAPI message) {
-                                Global.getSector().getPlayerFleet().getCargo().getCredits().add(refund);
-                            }
-                        });
-    }
+  private void issueRefund(MarketAPI marketAPI, final Long refund) {
+    lastRefundAmount = refund;
+    lastFaction = marketAPI.getFaction();
+    lastMarket = marketAPI;
+    Global.getSector()
+        .reportEventStage(
+            this,
+            "merchant_tariff_refund",
+            marketAPI.getPrimaryEntity(),
+            MessagePriority.DELIVER_IMMEDIATELY,
+            new AddCreditsOnReceiveCallBack(refund));
+  }
 
-    private boolean notSneaking(PlayerMarketTransaction transaction) {
-        return transaction.getTradeMode() == CampaignUIAPI.CoreUITradeMode.OPEN;
-    }
+  private boolean notSneaking(PlayerMarketTransaction transaction) {
+    return transaction.getTradeMode() == CampaignUIAPI.CoreUITradeMode.OPEN;
+  }
 
-    private boolean isFavorable(RelationshipAPI factionStanding) {
-        return factionStanding.isAtWorst(RepLevel.FAVORABLE);
-    }
+  private boolean isFavorable(RelationshipAPI factionStanding) {
+    return factionStanding.isAtWorst(RepLevel.FAVORABLE);
+  }
 
-    @Override
-    public Map<String, String> getTokenReplacements() {
-        return new HashMap<String, String>() {{
-            put("$credits", lastRefundAmount.toString());
-            put("$faction", lastFaction.getDisplayName());
-            put("$market", lastMarket.getName());
-        }};
-    }
+  @Override
+  public Map<String, String> getTokenReplacements() {
+    return new HashMap<String, String>() {{
+      put("$credits", lastRefundAmount.toString());
+      put("$faction", lastFaction.getDisplayName());
+      put("$market", lastMarket.getName());
+    }};
+  }
 }

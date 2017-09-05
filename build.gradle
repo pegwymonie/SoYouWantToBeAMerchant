@@ -6,10 +6,14 @@ group 'org.potatohed.sywtb.merchant'
 version startTime
 
 apply plugin: 'java'
+apply plugin: 'idea'
+
+
 
 sourceCompatibility = 1.7
 
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
@@ -139,6 +143,8 @@ dependencies {
   testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
   testCompile group: 'junit', name: 'junit', version: '4.12'
   testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+  testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
 }
 
 static Spec<FileTreeElement> getEmptyCsvFiles() {

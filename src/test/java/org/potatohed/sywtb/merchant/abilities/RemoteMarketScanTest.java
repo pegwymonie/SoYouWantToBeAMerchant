@@ -10,10 +10,9 @@ import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
 import org.potatohed.sectorunit.MockedGlobal;
 
-import java.lang.reflect.Field;
-
 import static org.mockito.Mockito.verify;
 import static org.potatohed.sywtb.merchant.util.Internals.InstancedInterals;
+import static org.potatohed.sywtb.merchant.util.ReflectionUtils.reflectiveSet;
 import static org.potatohed.sywtb.merchant.util.Targets.ValidTargets;
 
 public class RemoteMarketScanTest {
@@ -30,7 +29,6 @@ public class RemoteMarketScanTest {
     @Before
     public void setup() {
         systemUnderTest = new RemoteMarketScan();
-
     }
 
 
@@ -50,14 +48,14 @@ public class RemoteMarketScanTest {
         verify(EVENT_MANAGER, ONCE).endEvent(EXPECTED_EVENT);
     }
 
-    private void reflectiveSet(Object target, String fieldName, Object value) {
-        try {
-            Field fieldToSet = target.getClass().getDeclaredField(fieldName);
-            fieldToSet.setAccessible(true);
-            fieldToSet.set(target, value);
-            fieldToSet.setAccessible(false);
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    @Test
+    public void applyEffect() {
+        systemUnderTest.applyEffect(0,0);
     }
+
+    @Test
+    public void deactivateImpl() {
+        systemUnderTest.deactivateImpl();
+    }
+
 }
